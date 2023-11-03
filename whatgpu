@@ -1,0 +1,13 @@
+#!/bin/bash
+glxinfo="$(glxinfo)"
+eglinfo="$(eglinfo)"
+vulkaninfo="$(vulkaninfo 2>/dev/null)"
+echo "$(basename $0):"
+echo "  OpenGL:"
+echo "    Core      - GPU: $(echo -e "$glxinfo" | grep "OpenGL renderer string" | cut -d' ' -f 4-) | Driver: OpenGL $(echo -e "$glxinfo" | grep "OpenGL core profile version string" | cut -d' ' -f 6- | sed 's/ (Core Profile)//g')"
+echo "    OpenGL ES -      $(n=1; while [[ $n -lt $(echo "$(echo -e "$glxinfo" | grep "OpenGL renderer string" | cut -d' ' -f 4-)" | wc -c) ]]; do printf " "; n=$((n+1)); done)   Driver: $(echo -e "$glxinfo" | grep "OpenGL ES profile version string" | cut -d' ' -f 6-)"
+echo "    EGL       - Clients : $(echo -e "$eglinfo" | grep "EGL client APIs" | head -1 | cut -d' ' -f 4-) | Driver: $(echo -e "$eglinfo" | grep "EGL vendor string" | head -1 | cut -d' ' -f 4-) | EGL Version: $(echo -e "$eglinfo" | grep "EGL version string" | head -1 | cut -d' ' -f 4-)"
+echo "  Vulkan:"
+echo "    Vulkan    - GPU:$(echo -e "$vulkaninfo" | grep "deviceName" | cut -d'=' -f 2-) | Driver:$(echo -e "$vulkaninfo" | grep "driverInfo" | head -1 | cut -d'=' -f 2-)"
+echo "  OpenCL:"
+echo "    OpenCL    - GPU:  | Driver: "

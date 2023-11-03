@@ -1,0 +1,22 @@
+#!/bin/bash
+if [[ ! "$1" ]]; then >&2 echo "Please specify how many milliseconds to wait before outputting time left each time." && exit 1; fi
+if [[ ! "$2" ]]; then >&2 echo "Please specify how many seconds to count down from." && exit 1; fi
+increments="$1" # The amount of milliseconds between printing the current time left
+# Reformat increments to be used with sleep command aswell
+if [[ "$increments" -lt "10" ]]; then sleepincrements="000$increments"
+elif [[ "$increments" -lt "100" ]]; then sleepincrements="00$increments"
+elif [[ "$increments" -lt "1000" ]]; then sleepincrements="0$increments"
+else sleepincrements="$increments"; fi && sleepincrements="$(echo $sleepincrements | grep -o "." | head -1).$(echo $sleepincrements | grep -o "." | tail -3 | tr -d '\n' )"
+msecleft="$(($2*1000))" # Convert user input in seconds into milliseconds
+while [ $msecleft -gt 0 ]; do # Start counting
+	vsecleft="$(($msecleft/1000))" # Get number of full seconds left
+	vmsecleft="$(($msecleft-$vsecleft*1000))" # Subtract number of full seconds left from milliseconds
+	# Allign numbers
+	if [[ "$vmsecleft" -lt "10" ]]; then vmsecleft="000$vmsecleft"
+	elif [[ "$vmsecleft" -lt "100" ]]; then vmsecleft="00$vmsecleft"
+	elif [[ "$vmsecleft" -lt "1000" ]]; then vmsecleft="0$vmsecleft"
+	fi
+	echo "$vsecleft.$vmsecleft" # Print time
+	msecleft=$(($msecleft-$increments)) && sleep "$sleepincrements" # Reduce time
+done
+echo -e '\a'"Time up!"

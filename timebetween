@@ -1,0 +1,14 @@
+#!/bin/bash
+SecSLS="$(($2 - $1))"
+secSLS="$(($(($2 - $1)) % 60))" && if [[ "$secSLS" =~ ^([0-9])$ ]]; then secSLS="0$secSLS"; fi
+MinSLS="$(($(($2 - $1)) / 60))"
+minSLS="$(($(($(($2 - $1)) / 60)) % 60))" && if [[ "$minSLS" =~ ^([0-9])$ ]]; then minSLS="0$minSLS"; fi
+HrsSLS="$(($(($(($2 - $1)) / 60)) / 60))"
+hrsSLS="$(($(($(($(($2 - $1)) / 60)) / 60)) % 24))" && if [[ "$hrsSLS" =~ ^([0-9])$ ]]; then hrsSLS="0$hrsSLS"; fi
+DSLS="$(($(($(($(($2 - $1)) / 60)) / 60)) / 24))"
+dSLS="$(($(($(($(($(($2 - $1)) / 60)) / 60)) / 24)) % 7))" && if [[ "$dSLS" =~ ^([0-9])$ ]]; then dSLS="0$dSLS"; fi
+WSLS="$(($(($(($(($(($2 - $1)) / 60)) / 60)) / 24)) / 7))"
+wSLS="$(($(($(($(($(($(($2 - $1)) / 60)) / 60)) / 24)) / 7)) % 30))" && if [[ "$wSLS" =~ ^([0-9])$ ]]; then wSLS="0$wSLS"; fi
+#	mSLS="$(($dSE / 10)) % 365))" && if [[ "$mSLS" =~ ^([0-9])$ ]]; then mSLS="0$mSLS"; fi
+#	ySLS="$(($dSE / 10)) / 365))"
+echo "0 0 Year(s), 0 0 Month(s), $WSLS $wSLS Week(s), $DSLS $dSLS Day(s), $hrsSLS:$minSLS:$secSLS $HrsSLS:$MinSLS:$SecSLS"
