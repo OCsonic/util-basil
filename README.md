@@ -1,3 +1,2 @@
 # util-basil
-
-A collection of small utilities that I wrote to assist in other programs.
+You probably don't need this unless it is directly pulled in as a dependency by something else.
